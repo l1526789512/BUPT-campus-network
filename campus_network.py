@@ -30,16 +30,17 @@ if login:
     if (username is None) or (passwd is None):
         parser.error("You are intended to login, please specify username and passwd.")
     else:
-        host = "http://10.3.8.211/"
-        data = {"DDDDD": username, "upass": passwd, "0MKKey":""}
+        host = "http://10.3.8.211/login"
+        # data = {"DDDDD": username, "upass": passwd, "0MKKey":""}
+        data = {"user": username, "pass": passwd, "0MKKey":""}
         data = urllib.parse.urlencode(data)
         data = data.encode("utf8")
         req = urllib.request.Request(host, data)
         response = urllib.request.urlopen(req)
-        html = response.read().decode("gbk")
+        html = response.read().decode("utf-8")
         # print(type(html))
         # print(html)
-        if response.code == 200 and "您已经成功登录。" in html:
+        if response.code == 200 and "您已经登录成功" in html:
             print("Login Successfully!")
         else:
             print("Login failed!")
@@ -49,11 +50,12 @@ if login:
                 print("Failed because of some other reason(s). Please try again.")
 else:
     print("You are intended to logout.")
-    url = "http://10.3.8.211/F.htm"
+    url = "http://10.3.8.211/logout"
     req = urllib.request.Request(url)
     response = urllib.request.urlopen(req)
-    html = response.read().decode("gbk")
-    if response.code == 200 and "注销成功" in html:
+    html = response.read().decode("utf-8")
+    # print(html)
+    if response.code == 200:
         print("Logout Successfully!")
     else:
         print("Logout failed!")
